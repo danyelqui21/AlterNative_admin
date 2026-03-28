@@ -13,6 +13,7 @@ import {
   Megaphone,
   Wallet,
   BarChart3,
+  Bell,
   Settings,
   ShieldCheck,
   Sun,
@@ -69,6 +70,7 @@ const sections: NavSection[] = [
   {
     title: 'SISTEMA',
     items: [
+      { label: 'Notificaciones', to: '/notificaciones', icon: Bell },
       { label: 'Analíticas', to: '/analiticas', icon: BarChart3 },
       { label: 'Configuración', to: '/configuracion', icon: Settings },
     ],

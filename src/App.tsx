@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { startSessionHeartbeat } from './core/services/session-heartbeat';
 import { AdminLayout } from './components/layout/AdminLayout';
 import DashboardPage from './pages/DashboardPage';
 import UsersPage from './pages/UsersPage';
@@ -16,6 +17,7 @@ import WalletAdminPage from './pages/WalletAdminPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import VerificationsPage from './pages/VerificationsPage';
 import SettingsAdminPage from './pages/SettingsAdminPage';
+import NotificationsAdminPage from './pages/NotificationsAdminPage';
 import LoginPage from './pages/LoginPage';
 
 const queryClient = new QueryClient({
@@ -26,6 +28,11 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Start session heartbeat if admin is already authenticated
+if (localStorage.getItem('lagunapp-admin-token')) {
+  startSessionHeartbeat();
+}
 
 function App() {
   return (
@@ -55,6 +62,8 @@ function App() {
             <Route path="analiticas" element={<AnalyticsPage />} />
             <Route path="verificaciones" element={<VerificationsPage />} />
             <Route path="verifications" element={<VerificationsPage />} />
+            <Route path="notificaciones" element={<NotificationsAdminPage />} />
+            <Route path="notifications-admin" element={<NotificationsAdminPage />} />
             <Route path="configuracion" element={<SettingsAdminPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

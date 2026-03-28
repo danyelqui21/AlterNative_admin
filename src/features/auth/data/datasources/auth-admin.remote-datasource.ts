@@ -5,7 +5,7 @@ import type { AdminLoginParams } from '../../domain/entities/admin-user.entity';
 
 export class AuthAdminRemoteDatasource {
   async login(params: AdminLoginParams): Promise<{ user: AdminUserModel; token: string }> {
-    const { data } = await apiClient.post('/auth/login', params);
+    const { data } = await apiClient.post('/auth/login', { ...params, appName: 'LagunApp Admin' });
     return data;
   }
 

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { stopSessionHeartbeat } from '@/core/services/session-heartbeat';
 import { useAdminMe, useAdminLogin } from '../api/auth-api';
 import type { AdminLoginRequest } from '../types/admin-user';
 
@@ -17,6 +18,7 @@ export function useAdminAuth() {
   );
 
   const logout = useCallback(() => {
+    stopSessionHeartbeat();
     localStorage.removeItem('lagunapp-admin-token');
     qc.removeQueries({ queryKey: ['admin-me'] });
     qc.clear();

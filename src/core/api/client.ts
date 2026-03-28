@@ -22,6 +22,8 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       localStorage.removeItem('lagunapp-admin-token');
+      localStorage.removeItem('lagunapp-admin-refresh-token');
+      localStorage.removeItem('lagunapp-admin-user');
       window.location.href = '/login';
     }
     return Promise.reject(err);

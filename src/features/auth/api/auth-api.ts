@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/core/api/client';
+import { startSessionHeartbeat } from '@/core/services/session-heartbeat';
 import type {
   AdminUser,
   AdminLoginRequest,
@@ -21,12 +22,13 @@ export function useAdminLogin() {
   const qc = useQueryClient();
   return useMutation<AdminAuthResponse, Error, AdminLoginRequest>({
     mutationFn: async (credentials) => {
-      const { data } = await api.post('/auth/login', credentials);
+      const { data } = await api.post('/auth/login', { ...credentials, appName: 'LagunApp Admin' });
       return data;
     },
     onSuccess: (data) => {
       localStorage.setItem('lagunapp-admin-token', data.token);
       qc.invalidateQueries({ queryKey: ['admin-me'] });
+      startSessionHeartbeat();
     },
   });
 }
