@@ -10,6 +10,7 @@ const pageTitles: Record<string, string> = {
   '/eventos': 'Eventos',
   '/restaurantes': 'Restaurantes',
   '/tours': 'Tours',
+  '/teatros': 'Teatros',
   '/blog': 'Blog',
   '/cupones': 'Cupones',
   '/tickets': 'Tickets',
@@ -20,9 +21,18 @@ const pageTitles: Record<string, string> = {
   '/configuracion': 'Configuración',
 };
 
+function getUserInitials(): string {
+  try {
+    const user = JSON.parse(localStorage.getItem('lagunapp-admin-user') || '{}');
+    const name = user?.name || 'A';
+    return name.split(' ').map((w: string) => w[0]).slice(0, 2).join('').toUpperCase();
+  } catch { return 'A'; }
+}
+
 export function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const initials = getUserInitials();
 
   const currentTitle = pageTitles[location.pathname] ?? 'Admin';
 
@@ -81,7 +91,7 @@ export function AdminLayout() {
                 color: 'var(--on-primary)',
               }}
             >
-              A
+              {initials}
             </div>
           </div>
         </header>

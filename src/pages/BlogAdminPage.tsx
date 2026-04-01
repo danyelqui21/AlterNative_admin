@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useBlogAdminViewModel } from '@/features/blog/presentation/viewmodels/blog-admin.viewmodel';
 import { Shimmer, ShimmerTable } from '@/components/ui/Shimmer';
+import { ImageUpload } from '@/components/ui/ImageUpload';
 import {
   FileText,
   Search,
@@ -337,6 +338,7 @@ export default function BlogAdminPage() {
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Titulo</label>
                 <input
                   type="text"
+                  placeholder="ej. Los 10 mejores restaurantes de La Laguna"
                   value={form.title}
                   onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                   className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
@@ -347,6 +349,7 @@ export default function BlogAdminPage() {
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Nombre del Autor</label>
                 <input
                   type="text"
+                  placeholder="ej. Ana Lucia Reyes"
                   value={form.authorName}
                   onChange={(e) => setForm((f) => ({ ...f, authorName: e.target.value }))}
                   className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
@@ -356,6 +359,7 @@ export default function BlogAdminPage() {
               <div>
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Contenido</label>
                 <textarea
+                  placeholder="Escribe el contenido del articulo..."
                   value={form.content}
                   onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
                   rows={6}
@@ -366,6 +370,7 @@ export default function BlogAdminPage() {
               <div>
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Extracto</label>
                 <textarea
+                  placeholder="Resumen corto que aparece en la lista de articulos..."
                   value={form.excerpt}
                   onChange={(e) => setForm((f) => ({ ...f, excerpt: e.target.value }))}
                   rows={2}
@@ -373,15 +378,12 @@ export default function BlogAdminPage() {
                   style={{ backgroundColor: 'var(--surface-variant)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>URL de Imagen</label>
-                <input
-                  type="text"
-                  value={form.imageUrl}
-                  onChange={(e) => setForm((f) => ({ ...f, imageUrl: e.target.value }))}
-                  className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
-                  style={{ backgroundColor: 'var(--surface-variant)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
-                />
+              <ImageUpload
+                value={form.imageUrl}
+                onChange={(url) => setForm((f) => ({ ...f, imageUrl: url }))}
+                folder="blog"
+                label="Imagen"
+              />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Tags (separados por coma)</label>
@@ -413,7 +415,6 @@ export default function BlogAdminPage() {
               </button>
             </div>
           </div>
-        </div>
       )}
     </div>
   );

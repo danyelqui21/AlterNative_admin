@@ -17,12 +17,14 @@ export default function LoginPage() {
     setError('');
     try {
       const result = await login({ email, password });
-      if (result.user?.role !== 'admin') {
-        setError('Acceso restringido a administradores');
+      const allowedRoles = ['admin', 'theater_manager', 'theater_submanager'];
+      if (!allowedRoles.includes(result.user?.role)) {
+        setError('Acceso restringido a administradores y gerentes de teatro');
         return;
       }
       localStorage.setItem('lagunapp-admin-user', JSON.stringify(result.user));
-      navigate('/');
+      const isTheaterRole = ['theater_manager', 'theater_submanager'].includes(result.user?.role);
+      navigate(isTheaterRole ? '/teatros' : '/');
     } catch (err: any) {
       setError(err.message || 'Credenciales invalidas');
     }

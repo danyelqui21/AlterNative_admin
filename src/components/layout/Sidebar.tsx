@@ -6,6 +6,7 @@ import {
   CalendarDays,
   UtensilsCrossed,
   Map,
+  Armchair,
   FileText,
   Tag,
   Ticket,
@@ -31,16 +32,26 @@ interface NavItem {
   label: string;
   to: string;
   icon: React.ComponentType<{ className?: string }>;
+  roles?: string[]; // if set, only these roles see this item
 }
 
 interface NavSection {
   title: string;
   items: NavItem[];
+  roles?: string[]; // if set, only these roles see this section
+}
+
+function getUserRole(): string {
+  try {
+    const user = JSON.parse(localStorage.getItem('lagunapp-admin-user') || '{}');
+    return user?.role || 'admin';
+  } catch { return 'admin'; }
 }
 
 const sections: NavSection[] = [
   {
     title: 'PRINCIPAL',
+    roles: ['admin'],
     items: [
       { label: 'Dashboard', to: '/', icon: LayoutDashboard },
       { label: 'Usuarios', to: '/usuarios', icon: Users },
@@ -53,12 +64,14 @@ const sections: NavSection[] = [
       { label: 'Eventos', to: '/eventos', icon: CalendarDays },
       { label: 'Restaurantes', to: '/restaurantes', icon: UtensilsCrossed },
       { label: 'Tours', to: '/tours', icon: Map },
+      { label: 'Teatros', to: '/teatros', icon: Armchair, roles: ['admin', 'theater_manager', 'theater_submanager'] },
       { label: 'Blog', to: '/blog', icon: FileText },
       { label: 'Cupones', to: '/cupones', icon: Tag },
     ],
   },
   {
     title: 'NEGOCIO',
+    roles: ['admin'],
     items: [
       { label: 'Tickets', to: '/tickets', icon: Ticket },
       { label: 'Suscripciones', to: '/suscripciones', icon: CreditCard },
@@ -69,6 +82,7 @@ const sections: NavSection[] = [
   },
   {
     title: 'SISTEMA',
+    roles: ['admin'],
     items: [
       { label: 'Notificaciones', to: '/notificaciones', icon: Bell },
       { label: 'Analíticas', to: '/analiticas', icon: BarChart3 },
@@ -79,6 +93,7 @@ const sections: NavSection[] = [
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const { isDark, toggle } = useTheme();
+  const role = getUserRole();
 
   return (
     <>
@@ -121,7 +136,14 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 py-2">
-          {sections.map((section) => (
+          {sections
+            .filter((section) => !section.roles || section.roles.includes(role))
+            .map((section) => {
+              const visibleItems = section.items.filter(
+                (item) => !item.roles || item.roles.includes(role),
+              );
+              if (visibleItems.length === 0) return null;
+              return (
             <div key={section.title} className="mb-4">
               <p
                 className="mb-1.5 px-3 text-xs font-semibold uppercase tracking-wider"
@@ -130,7 +152,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                 {section.title}
               </p>
               <ul className="space-y-0.5">
-                {section.items.map((item) => (
+                {visibleItems.map((item) => (
                   <li key={item.to}>
                     <NavLink
                       to={item.to}
@@ -155,7 +177,8 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                 ))}
               </ul>
             </div>
-          ))}
+              );
+          })}
         </nav>
 
         {/* Theme toggle */}

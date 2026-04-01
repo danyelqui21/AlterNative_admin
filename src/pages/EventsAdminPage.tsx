@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useEventsAdminViewModel } from '@/features/events/presentation/viewmodels/events-admin.viewmodel';
 import { ShimmerTable } from '@/components/ui/Shimmer';
+import { ImageUpload } from '@/components/ui/ImageUpload';
 
 interface TicketType {
   id?: string;
@@ -571,6 +572,7 @@ export default function EventsAdminPage() {
                 <label className="text-xs font-medium mb-1 block" style={{ color: 'var(--text-muted)' }}>Titulo</label>
                 <input
                   type="text"
+                  placeholder="ej. Noche de Rock en el Coliseo"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="w-full px-4 py-2 rounded-xl border text-sm outline-none"
@@ -580,6 +582,7 @@ export default function EventsAdminPage() {
               <div className="md:col-span-2">
                 <label className="text-xs font-medium mb-1 block" style={{ color: 'var(--text-muted)' }}>Descripcion</label>
                 <textarea
+                  placeholder="Describe el evento, artistas, actividades, lo que incluye..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
@@ -604,6 +607,7 @@ export default function EventsAdminPage() {
                 <label className="text-xs font-medium mb-1 block" style={{ color: 'var(--text-muted)' }}>Ciudad</label>
                 <input
                   type="text"
+                  placeholder="ej. Torreón"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                   className="w-full px-4 py-2 rounded-xl border text-sm outline-none"
@@ -634,6 +638,7 @@ export default function EventsAdminPage() {
                 <label className="text-xs font-medium mb-1 block" style={{ color: 'var(--text-muted)' }}>Venue</label>
                 <input
                   type="text"
+                  placeholder="ej. Teatro Nazas, Coliseo Centenario"
                   value={formData.venue}
                   onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
                   className="w-full px-4 py-2 rounded-xl border text-sm outline-none"
@@ -644,6 +649,7 @@ export default function EventsAdminPage() {
                 <label className="text-xs font-medium mb-1 block" style={{ color: 'var(--text-muted)' }}>Precio base (MXN)</label>
                 <input
                   type="number"
+                  placeholder="0.00"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
                   className="w-full px-4 py-2 rounded-xl border text-sm outline-none"
@@ -660,16 +666,12 @@ export default function EventsAdminPage() {
                   style={{ backgroundColor: 'var(--surface-variant)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
                 />
               </div>
-              <div>
-                <label className="text-xs font-medium mb-1 block" style={{ color: 'var(--text-muted)' }}>URL Imagen</label>
-                <input
-                  type="text"
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  className="w-full px-4 py-2 rounded-xl border text-sm outline-none"
-                  style={{ backgroundColor: 'var(--surface-variant)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
-                />
-              </div>
+              <ImageUpload
+                value={formData.imageUrl}
+                onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                folder="events"
+                label="Imagen"
+              />
               <div className="flex items-center gap-4 md:col-span-2">
                 <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--text-primary)' }}>
                   <input

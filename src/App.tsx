@@ -18,6 +18,7 @@ import AnalyticsPage from './pages/AnalyticsPage';
 import VerificationsPage from './pages/VerificationsPage';
 import SettingsAdminPage from './pages/SettingsAdminPage';
 import NotificationsAdminPage from './pages/NotificationsAdminPage';
+import TheatersAdminPage from './pages/TheatersAdminPage';
 import LoginPage from './pages/LoginPage';
 
 const queryClient = new QueryClient({
@@ -50,6 +51,7 @@ function App() {
             <Route path="eventos" element={<EventsAdminPage />} />
             <Route path="restaurantes" element={<RestaurantsAdminPage />} />
             <Route path="tours" element={<ToursAdminPage />} />
+            <Route path="teatros" element={<TheatersAdminPage />} />
             <Route path="blog" element={<BlogAdminPage />} />
             <Route path="cupones" element={<CouponsAdminPage />} />
             <Route path="tickets" element={<TicketsAdminPage />} />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useToursAdminViewModel } from '@/features/tours/presentation/viewmodels/tours-admin.viewmodel';
 import { Shimmer, ShimmerTable } from '@/components/ui/Shimmer';
+import { ImageUpload } from '@/components/ui/ImageUpload';
 import {
   Map,
   Search,
@@ -363,6 +364,7 @@ export default function ToursAdminPage() {
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Titulo</label>
                 <input
                   type="text"
+                  placeholder="ej. Ruta Gastronómica del Centro"
                   value={form.title}
                   onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                   className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
@@ -398,6 +400,7 @@ export default function ToursAdminPage() {
                   <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Precio (MXN)</label>
                   <input
                     type="number"
+                    placeholder="0.00"
                     value={form.price}
                     onChange={(e) => setForm((f) => ({ ...f, price: Number(e.target.value) }))}
                     className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
@@ -408,6 +411,7 @@ export default function ToursAdminPage() {
                   <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Capacidad Max</label>
                   <input
                     type="number"
+                    placeholder="20"
                     value={form.maxCapacity}
                     onChange={(e) => setForm((f) => ({ ...f, maxCapacity: Number(e.target.value) }))}
                     className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
@@ -425,19 +429,16 @@ export default function ToursAdminPage() {
                   style={{ backgroundColor: 'var(--surface-variant)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>URL de Imagen</label>
-                <input
-                  type="text"
-                  value={form.imageUrl}
-                  onChange={(e) => setForm((f) => ({ ...f, imageUrl: e.target.value }))}
-                  className="w-full rounded-xl border px-3 py-2 text-sm outline-none"
-                  style={{ backgroundColor: 'var(--surface-variant)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
-                />
-              </div>
+              <ImageUpload
+                value={form.imageUrl}
+                onChange={(url) => setForm((f) => ({ ...f, imageUrl: url }))}
+                folder="tours"
+                label="Imagen"
+              />
               <div>
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Descripcion</label>
                 <textarea
+                  placeholder="Describe la experiencia, que incluye, puntos de interes..."
                   value={form.description}
                   onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                   rows={3}
