@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { tr } from '@/core/i18n/translations';
 import {
   LayoutDashboard,
   Users,
@@ -48,48 +49,50 @@ function getUserRole(): string {
   } catch { return 'admin'; }
 }
 
-const sections: NavSection[] = [
-  {
-    title: 'PRINCIPAL',
-    roles: ['admin'],
-    items: [
-      { label: 'Dashboard', to: '/', icon: LayoutDashboard },
-      { label: 'Usuarios', to: '/usuarios', icon: Users },
-      { label: 'Moderación', to: '/moderacion', icon: Shield },
-    ],
-  },
-  {
-    title: 'CONTENIDO',
-    items: [
-      { label: 'Eventos', to: '/eventos', icon: CalendarDays },
-      { label: 'Restaurantes', to: '/restaurantes', icon: UtensilsCrossed },
-      { label: 'Tours', to: '/tours', icon: Map },
-      { label: 'Teatros', to: '/teatros', icon: Armchair, roles: ['admin', 'theater_manager', 'theater_submanager'] },
-      { label: 'Blog', to: '/blog', icon: FileText },
-      { label: 'Cupones', to: '/cupones', icon: Tag },
-    ],
-  },
-  {
-    title: 'NEGOCIO',
-    roles: ['admin'],
-    items: [
-      { label: 'Tickets', to: '/tickets', icon: Ticket },
-      { label: 'Suscripciones', to: '/suscripciones', icon: CreditCard },
-      { label: 'Publicidad', to: '/publicidad', icon: Megaphone },
-      { label: 'Wallet', to: '/wallet', icon: Wallet },
-      { label: 'Verificaciones', to: '/verificaciones', icon: ShieldCheck },
-    ],
-  },
-  {
-    title: 'SISTEMA',
-    roles: ['admin'],
-    items: [
-      { label: 'Notificaciones', to: '/notificaciones', icon: Bell },
-      { label: 'Analíticas', to: '/analiticas', icon: BarChart3 },
-      { label: 'Configuración', to: '/configuracion', icon: Settings },
-    ],
-  },
-];
+function buildSections(): NavSection[] {
+  return [
+    {
+      title: tr.mainSection,
+      roles: ['admin'],
+      items: [
+        { label: tr.dashboard, to: '/', icon: LayoutDashboard },
+        { label: tr.users, to: '/usuarios', icon: Users },
+        { label: tr.moderation, to: '/moderacion', icon: Shield },
+      ],
+    },
+    {
+      title: tr.contentSection,
+      items: [
+        { label: tr.events, to: '/eventos', icon: CalendarDays },
+        { label: tr.restaurants, to: '/restaurantes', icon: UtensilsCrossed },
+        { label: tr.tours, to: '/tours', icon: Map },
+        { label: tr.theaters, to: '/teatros', icon: Armchair, roles: ['admin', 'theater_manager', 'theater_submanager'] },
+        { label: tr.blog, to: '/blog', icon: FileText },
+        { label: tr.coupons, to: '/cupones', icon: Tag },
+      ],
+    },
+    {
+      title: tr.businessSection,
+      roles: ['admin'],
+      items: [
+        { label: tr.tickets, to: '/tickets', icon: Ticket },
+        { label: tr.subscriptions, to: '/suscripciones', icon: CreditCard },
+        { label: tr.advertising, to: '/publicidad', icon: Megaphone },
+        { label: tr.wallet, to: '/wallet', icon: Wallet },
+        { label: tr.verifications, to: '/verificaciones', icon: ShieldCheck },
+      ],
+    },
+    {
+      title: tr.systemSection,
+      roles: ['admin'],
+      items: [
+        { label: tr.notifications, to: '/notificaciones', icon: Bell },
+        { label: tr.analytics, to: '/analiticas', icon: BarChart3 },
+        { label: tr.settings, to: '/configuracion', icon: Settings },
+      ],
+    },
+  ];
+}
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const { isDark, toggle } = useTheme();
@@ -123,7 +126,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
             className="text-xl font-bold tracking-tight"
             style={{ color: 'var(--primary)' }}
           >
-            LagunApp Admin
+            {tr.appName}
           </span>
           <button
             onClick={onClose}
@@ -136,7 +139,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 py-2">
-          {sections
+          {buildSections()
             .filter((section) => !section.roles || section.roles.includes(role))
             .map((section) => {
               const visibleItems = section.items.filter(
@@ -196,7 +199,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
             ) : (
               <Moon className="h-5 w-5" />
             )}
-            {isDark ? 'Modo claro' : 'Modo oscuro'}
+            {isDark ? tr.lightMode : tr.darkMode}
           </button>
         </div>
       </aside>
